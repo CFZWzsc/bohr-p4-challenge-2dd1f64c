@@ -1,0 +1,47 @@
+[
+  {
+    "record_key": "P1",
+    "relevance": "direct",
+    "decision": "keep",
+    "criteria": {
+      "sepsis": "match",
+      "acute kidney injury": "match",
+      "nlrp3": "match"
+    },
+    "evidence": [
+      {
+        "field": "abstract",
+        "quote": "NLRP3 inflammasome activation was associated with subsequent acute kidney injury",
+        "locator": "/candidates/0/abstract"
+      }
+    ]
+  },
+  {
+    "record_key": "P2",
+    "relevance": "indirect",
+    "decision": "review",
+    "criteria": {
+      "sepsis": "match",
+      "acute kidney injury": "match",
+      "nlrp3": "partial"
+    },
+    "evidence": [
+      {
+        "field": "abstract",
+        "quote": "Gasdermin D cleavage and tubular pyroptosis were measured",
+        "locator": "/candidates/1/abstract"
+      }
+    ]
+  },
+  {
+    "record_key": "P3",
+    "relevance": "not_relevant",
+    "decision": "exclude",
+    "criteria": {
+      "sepsis": "mismatch",
+      "acute kidney injury": "mismatch",
+      "nlrp3": "mismatch"
+    },
+    "evidence": []
+  }
+]
