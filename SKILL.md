@@ -116,6 +116,18 @@ python /skills/weekly-skill/scripts/validate_result.py \
 - **大量同分**：使用公开稳定平局链，不随机打散；重复运行的相同输入和评估应得到字节一致的 JSON。
 - **时间不足**：保留早期部分结果和评估，说明已完成/未完成项，不为追求 `completed` 隐藏错误。
 
+## Quickstart
+
+在仓库根目录 `bohrium-competition` 执行（PowerShell）：
+
+```powershell
+python -B "tracks\literature-search\challenges\challenge-2dd1f64c\06_code\submission\scripts\screen_literature.py" --case "tracks\literature-search\challenges\challenge-2dd1f64c\06_code\submission\examples\demo-case\case.json" --assessments "tracks\literature-search\challenges\challenge-2dd1f64c\06_code\submission\examples\demo-case\assessments.json" --question "Does NLRP3 inflammasome activation predict acute kidney injury in patients with sepsis?" --criterion "sepsis" --criterion "acute kidney injury" --criterion "nlrp3" --output "$env:TEMP\demo_2dd1f64c\result.json"
+```
+
+- 示例输入：`examples/demo-case/case.json` 与同目录 `assessments.json`，合成且自包含（`"demo": true`，3 条候选记录 + 3 条逐条评估；DOI 均为虚构的 `10.0000/...`）。
+- **已知缺陷（当前脚本，未修复）**：`screen_literature.py` 的 `main()` 在 `os.environ["SK_RESULT_PATH"] = str(args.out)` 处引用了不存在的 `args.out`（`--output/--out` 解析后的属性名是 `args.output`）。因此上面的命令退出码为 0，却不会写入 `--output` 指定路径，只在当前工作目录留下 `{"status": "partial", "error": "AttributeError"}` 错误桩。对同一输入直接调用 `screen()` + `apply_contract()` 可得到 `status = "completed"`、3 条 `screening_results`、`ranking` 覆盖全部记录且无未映射字段，说明示例输入本身合法，故障仅在这一行 CLI 接线。
+- 该用例只验证脚本可执行与输出契约齐全，不代表真实筛选结论。
+
 ## 最小调用示例（合成示意，非官方案例、非正式测试输出）
 
 以下只演示接口，不是正式答案，也不得复制到正式结果。合成 case：
@@ -153,5 +165,5 @@ python /skills/weekly-skill/scripts/validate_result.py \
 1. **调用 Agent 必须交付成品，不是流程说明**：脚本产出只是索引、核对或规格骨架；调用 Agent 必须在同一 `result.json` 中补齐本题要求的最终产物（正文/译文/审稿意见/综述/分析结论/图表源文件与导出件/幻灯片页内容与讲稿/实验方案等）。交付字段为空、只有标题骨架，或含 `pending`、`TODO` 之类占位，一律视为未完成。
 2. **必须覆盖全部输入条目**：输入中的每个章节、问题、文献、图、页面、指标都要有对应条目，不得只处理示例或首条；确实缺失的条目写入 `uncertainty` / `limitations` 并说明原因，不得静默跳过。
 3. **必须自检后再交付**：`case_id` 与输入一致；`output_contract` 每个字段都存在；状态值取本题契约规定的枚举；数字、单位、引用、来源可逐条回溯；结果内部无自相矛盾。
-4. **参数等价**：`python scripts/run_skill.py --case <输入> --out <输出>` 与 `--output <输出>` 等价；默认 `/input/case.json` → `/app/output/result.json`。
+4. **参数等价**：`python scripts/screen_literature.py --case <输入> --out <输出>` 与 `--output <输出>` 等价；默认 `/input/case.json` → `/app/output/result.json`。
 5. **平台用 3 个固定案例分别运行**：逻辑要由输入驱动，不针对某一份示例硬编码；字段命名差异走别名匹配与显式降级，并在 `uncertainty` 记录假设。
