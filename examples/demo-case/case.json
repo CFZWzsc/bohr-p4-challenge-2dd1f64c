@@ -1,0 +1,41 @@
+{
+  "demo": true,
+  "synthetic": true,
+  "case_id": "demo-2dd1f64c-nlrp3-saki",
+  "note": "Synthetic, self-contained demo case. Records, DOIs (10.0000/...) and abstracts are fabricated for testing only.",
+  "research_question": "Does NLRP3 inflammasome activation predict acute kidney injury in patients with sepsis?",
+  "output_contract": {
+    "status": "string",
+    "ranking": "array",
+    "screening_results": "array"
+  },
+  "candidates": [
+    {
+      "paper_id": "P1",
+      "title": "NLRP3 inflammasome activation predicts acute kidney injury in sepsis",
+      "abstract": "In a prospective cohort of 120 patients with sepsis, NLRP3 inflammasome activation was associated with subsequent acute kidney injury.",
+      "year": 2019,
+      "doi": "10.0000/demo.u1",
+      "authors": "Li J, Wang H",
+      "journal": "Kidney International"
+    },
+    {
+      "paper_id": "P2",
+      "title": "Gasdermin D and pyroptosis in septic acute kidney injury",
+      "abstract": "Gasdermin D cleavage and tubular pyroptosis were measured in sepsis-associated acute kidney injury, but sample size was limited.",
+      "year": 2021,
+      "doi": "10.0000/demo.u2",
+      "authors": "Chen X",
+      "journal": "Journal of the American Society of Nephrology"
+    },
+    {
+      "paper_id": "P3",
+      "title": "Editorial: rethinking biomarkers in critical illness",
+      "abstract": "This editorial comments on biomarker research in critical illness and calls for better reporting.",
+      "year": 2018,
+      "doi": "10.0000/demo.u3",
+      "authors": "Smith A",
+      "journal": "Critical Care"
+    }
+  ]
+}
