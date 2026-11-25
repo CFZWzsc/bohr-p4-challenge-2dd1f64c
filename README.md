@@ -18,6 +18,7 @@ answers, private data or credentials are included.
 | `SKILL.md` |
 | `examples/demo-case/assessments.json` |
 | `examples/demo-case/case.json` |
+| `scripts/deliver.py` |
 | `scripts/screen_literature.py` |
 | `scripts/validate_result.py` |
 | `README.md` |
@@ -25,7 +26,7 @@ answers, private data or credentials are included.
 ## How to run
 
 ```bash
-python scripts/screen_literature.py --case /input/case.json --output /app/output/result.json
+python scripts/sk_entry.py --input /input --work /app/work --out /app/output
 ```
 
 A single deterministic pass reads `/input`, computes the deliverable and writes a
