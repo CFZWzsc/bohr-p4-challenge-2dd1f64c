@@ -605,6 +605,11 @@ def run(args):
         if args.candidates:
             result["sources"].insert(1, {"type": "candidate_file", "path": str(args.candidates)})
         result["sources"][0]["path"] = str(args.case)
+        try:
+            import deliver as _deliver
+            _deliver.finalize(result, str(output), case if isinstance(case, dict) else {})
+        except Exception:
+            pass
         output.write_text(json.dumps(result, ensure_ascii=False, indent=2, allow_nan=False) + "\n", encoding="utf-8")
         print(json.dumps({"status": result["status"], "records": len(records), "output": str(output)}, ensure_ascii=False))
         return 0
