@@ -589,7 +589,7 @@ def run(args):
         if not isinstance(case, dict):
             raise ValueError("case.json must contain an object")
     except Exception as exc:
-        failure = {"case_id": None, "status": "failed", "errors": [type(exc).__name__ + ": " + str(exc)], "uncertainty": ["Input could not be parsed; no screening was performed."]}
+        failure = {"case_id": None, "status": "failed", "errors": [type(exc).__name__ + ": " + str(exc)], "uncertainty": ["Input could not be parsed; no screening was performed."], "contract_status": {"present": False, "reason": "case.json could not be parsed, so no output contract could be applied"}}
         output.write_text(json.dumps(failure, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         print(json.dumps(failure, ensure_ascii=False))
         return 2
@@ -615,10 +615,13 @@ def run(args):
             "errors": [type(exc).__name__ + ": " + str(exc)],
             "uncertainty": ["Screening failed; no missing records or metadata were fabricated."],
             "limitations": ["failed_before_complete_screening"], "changes": [],
+            "contract_status": {"present": "output_contract" in case,
+                                "unmapped_fields": [], "note": "contract applied to the failure record"},
         }
         if "output_contract" in case:
             result, _ = apply_contract(result, case["output_contract"])
             result["status"] = "failed"
+            result["contract_status"]["applied_to_failure"] = True
         output.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         print(json.dumps({"status": "failed", "error": str(exc)}, ensure_ascii=False))
         return 2
