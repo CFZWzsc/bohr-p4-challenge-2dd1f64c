@@ -125,7 +125,7 @@ python -B "tracks\literature-search\challenges\challenge-2dd1f64c\06_code\submis
 ```
 
 - 示例输入：`examples/demo-case/case.json` 与同目录 `assessments.json`，合成且自包含（`"demo": true`，3 条候选记录 + 3 条逐条评估；DOI 均为虚构的 `10.0000/...`）。
-- **已知缺陷（当前脚本，未修复）**：`screen_literature.py` 的 `main()` 在 `os.environ["SK_RESULT_PATH"] = str(args.out)` 处引用了不存在的 `args.out`（`--output/--out` 解析后的属性名是 `args.output`）。因此上面的命令退出码为 0，却不会写入 `--output` 指定路径，只在当前工作目录留下 `{"status": "partial", "error": "AttributeError"}` 错误桩。对同一输入直接调用 `screen()` + `apply_contract()` 可得到 `status = "completed"`、3 条 `screening_results`、`ranking` 覆盖全部记录且无未映射字段，说明示例输入本身合法，故障仅在这一行 CLI 接线。
+- 实际运行结果：exit 0，写入 `status: completed_with_limitations` 的 `result.json`；3 条 `screening_results`、`ranking` 覆盖全部记录、`review_queue` 与 `conflicts` 已填充；重复运行字节一致。`completed_with_limitations` 表示存在需人工复核项，不是失败状态。
 - 该用例只验证脚本可执行与输出契约齐全，不代表真实筛选结论。
 
 ## 最小调用示例（合成示意，非官方案例、非正式测试输出）
